@@ -1,16 +1,21 @@
 import Body from "./components/Body";
-import { BrowserRouter, Routes } from "react-router";
-import Header from "./components/Header";
+import { BrowserRouter, Routes, Route } from "react-router";
+import Today from "./components/Today";
+import FiveDays from "./components/FiveDays";
+import WeatherMap from "./components/WeatherMap";
 
 function App() {
   return (
     <>
-      {/* <BrowserRouter>
-        <Routes path="/" element={<Body />}>
-          <Route></Route>
+      <BrowserRouter basename="/">
+        <Routes>
+          <Route path="/" element={<Body />}>
+            <Route index element={<Today />} />
+            <Route path="/five-days" element={<FiveDays />} />
+            <Route path="/weather-map" element={<WeatherMap />} />
+          </Route>
         </Routes>
-      </BrowserRouter> */}
-      <Header />
+      </BrowserRouter>
     </>
   );
 }
