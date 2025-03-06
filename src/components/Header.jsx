@@ -1,9 +1,9 @@
 import appLogo from "../assets/appLogo.jpeg";
-import { CiSearch } from "react-icons/ci";
 import { IoLocationSharp } from "react-icons/io5";
 import NavBar from "./NavBar";
 import ThemeToggle from "./ThemeToggle"; // Import the ThemeToggle component
 import { NavLink } from "react-router";
+import Input from "./Input";
 
 const Header = () => {
   return (
@@ -19,13 +19,8 @@ const Header = () => {
             <IoLocationSharp className="self-center " size={30} />
             <span className="self-center">City, State, Country</span>
           </div>
-          <div className="flex justify-center gap-2">
-            <input
-              type="text"
-              placeholder="Search City"
-              className="border rounded-lg p-1.5 w-80 h-10 self-center"
-            />
-            <CiSearch className="self-center text-white" size={30} />
+          <div className="flex justify-center">
+            <Input />
           </div>
         </div>
         <div className="content-center">

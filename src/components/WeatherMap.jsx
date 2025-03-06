@@ -1,5 +1,9 @@
 const WeatherMap = () => {
-  return <div className="dark:bg-black">Weather Map</div>;
+  return (
+    <div className="bg-white text-black dark:bg-[#313544] dark:text-white">
+      Weather Map
+    </div>
+  );
 };
 
 export default WeatherMap;
