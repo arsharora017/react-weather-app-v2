@@ -21,5 +21,3 @@ function App() {
 }
 
 export default App;
-
-//className="bg-[#e2d4ff] grid min-h-screen"

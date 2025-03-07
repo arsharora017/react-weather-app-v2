@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import getWeatherByCity from "./getWeatherByCity";
+import WeatherContext from "../context/WeatherContext";
+
 const Input = () => {
   const [city, setCity] = useState("");
+  const { fetchWeather } = useContext(WeatherContext);
 
   const handleKeydown = (e) => {
     if (e.key === "Enter") {
       if (city !== "") {
         // enter input value to get weather data by city
-        getWeatherByCity(city);
+        fetchWeather(city);
       }
       setCity("");
     }

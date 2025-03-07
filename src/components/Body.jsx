@@ -1,11 +1,14 @@
 import { Outlet } from "react-router";
 import Header from "./Header";
+import { WeatherProvider } from "../context/WeatherContext";
 
 const Body = () => {
   return (
     <>
-      <Header />
-      <Outlet />
+      <WeatherProvider>
+        <Header />
+        <Outlet />
+      </WeatherProvider>
     </>
   );
 };

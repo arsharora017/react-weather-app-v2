@@ -4,8 +4,12 @@ import NavBar from "./NavBar";
 import ThemeToggle from "./ThemeToggle"; // Import the ThemeToggle component
 import { NavLink } from "react-router";
 import Input from "./Input";
+import { useContext } from "react";
+import WeatherContext from "../context/WeatherContext";
+// import { useWeather } from "../context/WeatherContext";
 
 const Header = () => {
+  const { weather } = useContext(WeatherContext);
   return (
     <header className="flex flex-col text-white">
       <div className="flex justify-around py-4 bg-[#0e2144]">
@@ -17,7 +21,11 @@ const Header = () => {
         <div className="flex gap-20">
           <div className="flex justify-center gap-2">
             <IoLocationSharp className="self-center " size={30} />
-            <span className="self-center">City, State, Country</span>
+            <span className="self-center">
+              {weather
+                ? `${weather.name}, ${weather.country}`
+                : "City, Country"}
+            </span>
           </div>
           <div className="flex justify-center">
             <Input />
