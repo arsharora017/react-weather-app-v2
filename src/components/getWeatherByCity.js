@@ -47,7 +47,7 @@ const formatToLocalTime = (time, timezone) => {
 };
 
 const iconUrlFromCode = (icon) => {
-  `https://openweathermap.org/img/wn/${icon}@2x.png`;
+  return `https://openweathermap.org/img/wn/${icon}@2x.png`;
 };
 
 const formatCurrentData = (data) => {
@@ -68,6 +68,7 @@ const formatCurrentData = (data) => {
   const localTime = formatToLocalTime(dt, timezone);
   const sunriseTime = formatToLocalTime(sunrise, timezone);
   const sunsetTime = formatToLocalTime(sunset, timezone);
+  const weatherIcon = iconUrlFromCode(icon);
 
   return {
     temp,
@@ -81,7 +82,7 @@ const formatCurrentData = (data) => {
     visibility,
     sunriseTime,
     sunsetTime,
-    icon: iconUrlFromCode(icon),
+    weatherIcon,
     description,
     localTime,
     dt,

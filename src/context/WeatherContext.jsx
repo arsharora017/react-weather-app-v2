@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import getWeatherByCity from "../components/getWeatherByCity";
 
 // Create context
@@ -18,6 +18,12 @@ export const WeatherProvider = ({ children }) => {
     const data = await getWeatherByCity(city);
     setWeather(data);
   };
+
+  // fetch default data on first render
+  useEffect(() => {
+    fetchWeather("London");
+  }, []);
+
   return (
     <WeatherContext.Provider value={{ weather, fetchWeather }}>
       {children}
