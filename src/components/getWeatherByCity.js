@@ -1,9 +1,10 @@
 import { DateTime } from "luxon";
+import { API_CONFIG } from "../utils/constants";
 
 //get Lat and Lon values from openweather's geocoding API
 const getLatLon = async (city) => {
-  const geoCodingUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=${1}&appid=${
-    import.meta.env.VITE_OPENWEATHER_API_KEY
+  const geoCodingUrl = `${API_CONFIG.GEO}direct?q=${city}&limit=${1}&appid=${
+    API_CONFIG.API_KEY
   }`;
 
   try {
@@ -25,9 +26,7 @@ const getLatLon = async (city) => {
 // Using the Lat and Lon values to get current weather
 // using openweather's current weather data API
 const getCurrWeather = async (lat, lon) => {
-  const currWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
-    import.meta.env.VITE_OPENWEATHER_API_KEY
-  }&units=metric`;
+  const currWeatherUrl = `${API_CONFIG.BASE_URL}weather?lat=${lat}&lon=${lon}&appid=${API_CONFIG.API_KEY}&units=${API_CONFIG.DEFAULT_PARAMS.url}}`;
   try {
     const response = await fetch(currWeatherUrl);
     const data = await response.json();
@@ -39,11 +38,15 @@ const getCurrWeather = async (lat, lon) => {
   }
 };
 
-// Function to convert
-const formatToLocalTime = (time, timezone) => {
-  return DateTime.fromSeconds(time)
-    .setZone(timezone)
-    .toFormat("yyyy-MM-dd HH:mm:ss");
+const formatToLocalTime = (secs, offset, format = "hh: mm a") => {
+  return DateTime.fromSeconds(secs + offset, { zone: "utc" }).toFormat(format);
+};
+
+// Local Time
+const formatToLocalDate = (time, offset) => {
+  return DateTime.fromSeconds(time + offset, { zone: "utc" }).toFormat(
+    "LLL dd, yyyy"
+  );
 };
 
 const iconUrlFromCode = (icon) => {
@@ -64,17 +67,22 @@ const formatCurrentData = (data) => {
     timezone,
   } = data;
 
+  const roundOffTemp = temp.toFixed();
+  const roundOffFeelsLike = feels_like.toFixed();
+  const roundOffTempMin = temp_min.toFixed();
+  const roundOffTempMax = temp_max.toFixed();
   const { description, icon, main } = weather[0];
   const localTime = formatToLocalTime(dt, timezone);
-  const sunriseTime = formatToLocalTime(sunrise, timezone);
-  const sunsetTime = formatToLocalTime(sunset, timezone);
+  const sunriseTime = formatToLocalTime(sunrise, timezone, "hh:mm a");
+  const sunsetTime = formatToLocalTime(sunset, timezone, "hh:mm a");
   const weatherIcon = iconUrlFromCode(icon);
+  const localDate = formatToLocalDate(sunrise, timezone);
 
   return {
-    temp,
-    feels_like,
-    temp_min,
-    temp_max,
+    roundOffTemp,
+    roundOffFeelsLike,
+    roundOffTempMin,
+    roundOffTempMax,
     humidity,
     name,
     country,
@@ -82,9 +90,12 @@ const formatCurrentData = (data) => {
     visibility,
     sunriseTime,
     sunsetTime,
+    sunrise,
+    sunset,
     weatherIcon,
     description,
     localTime,
+    localDate,
     dt,
     timezone,
     lat,
