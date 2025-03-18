@@ -26,7 +26,7 @@ const getLatLon = async (city) => {
 // Using the Lat and Lon values to get current weather
 // using openweather's current weather data API
 const getCurrWeather = async (lat, lon) => {
-  const currWeatherUrl = `${API_CONFIG.BASE_URL}weather?lat=${lat}&lon=${lon}&appid=${API_CONFIG.API_KEY}&units=${API_CONFIG.DEFAULT_PARAMS.url}}`;
+  const currWeatherUrl = `${API_CONFIG.BASE_URL}weather?lat=${lat}&lon=${lon}&appid=${API_CONFIG.API_KEY}&units=${API_CONFIG.DEFAULT_PARAMS.units}`;
   try {
     const response = await fetch(currWeatherUrl);
     const data = await response.json();
@@ -56,15 +56,17 @@ const iconUrlFromCode = (icon) => {
 const formatCurrentData = (data) => {
   const {
     coord: { lat, lon },
-    main: { temp, feels_like, temp_max, temp_min, humidity },
+    main: { temp, feels_like, temp_max, temp_min, humidity, pressure },
     visibility,
     name,
     dt,
     id,
     sys: { country, sunrise, sunset },
     weather,
-    wind: { speed },
+    wind: { speed, deg },
     timezone,
+    rain,
+    snow,
   } = data;
 
   const roundOffTemp = temp.toFixed();
@@ -77,6 +79,8 @@ const formatCurrentData = (data) => {
   const sunsetTime = formatToLocalTime(sunset, timezone, "hh:mm a");
   const weatherIcon = iconUrlFromCode(icon);
   const localDate = formatToLocalDate(sunrise, timezone);
+  const windSpeed = (speed * 3.6).toFixed(1);
+  const visibilityInKm = (visibility / 1000).toFixed(1);
 
   return {
     roundOffTemp,
@@ -84,10 +88,12 @@ const formatCurrentData = (data) => {
     roundOffTempMin,
     roundOffTempMax,
     humidity,
+    pressure,
     name,
     country,
-    speed,
-    visibility,
+    windSpeed,
+    deg,
+    visibilityInKm,
     sunriseTime,
     sunsetTime,
     sunrise,
@@ -102,6 +108,8 @@ const formatCurrentData = (data) => {
     lon,
     id,
     main,
+    rain,
+    snow,
   };
 };
 

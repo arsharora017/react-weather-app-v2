@@ -3,7 +3,6 @@ import WeatherContext from "../context/WeatherContext";
 WeatherContext;
 
 const SunriseSunsetArc = ({ sunrise, sunset }) => {
-  console.log(sunrise, sunset);
   const { weather } = useContext(WeatherContext);
 
   const [sunPosition, setSunPosition] = useState(0);
