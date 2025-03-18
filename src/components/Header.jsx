@@ -1,12 +1,11 @@
 import appLogo from "../assets/appLogo.jpeg";
 import { IoLocationSharp } from "react-icons/io5";
 import NavBar from "./NavBar";
-import ThemeToggle from "./ThemeToggle"; // Import the ThemeToggle component
+import ThemeToggle from "../theme/ThemeToggle"; // Import the ThemeToggle component
 import { NavLink } from "react-router";
 import Input from "./Input";
 import { useContext } from "react";
 import WeatherContext from "../context/WeatherContext";
-// import { useWeather } from "../context/WeatherContext";
 
 const Header = () => {
   const { weather } = useContext(WeatherContext);
