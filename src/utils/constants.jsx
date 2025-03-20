@@ -7,3 +7,8 @@ export const API_CONFIG = {
     apiid: import.meta.env.VITE_OPENWEATHER_API_KEY,
   },
 };
+
+export const WEATHER_IMAGES = {
+  BASE_IMAGE_URL: "https://openweathermap.org/img/wn/",
+  IMAGE_EXT: "@2x.png",
+};

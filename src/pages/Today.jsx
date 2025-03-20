@@ -4,7 +4,7 @@ import TodayWeatherConditons from "../components/TodayWeatherConditons";
 
 const Today = () => {
   return (
-    <div className="flex flex-col w-auto items-center h-screen">
+    <div className="flex flex-col w-auto items-center">
       <CurrentWeatherConditions />
       <TodayWeatherConditons />
       <HourlyTemperature />

@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { API_CONFIG } from "../utils/constants";
+import { API_CONFIG, WEATHER_IMAGES } from "../utils/constants";
 
 //get Lat and Lon values from openweather's geocoding API
 const getLatLon = async (city) => {
@@ -31,10 +31,26 @@ const getCurrWeather = async (lat, lon) => {
     const response = await fetch(currWeatherUrl);
     const data = await response.json();
     const formattedCurrData = formatCurrentData(data);
-    console.log(formattedCurrData);
+    // console.log(formattedCurrData);
     return formattedCurrData;
   } catch (error) {
     console.log("Error fetching weather data:", error);
+  }
+};
+
+// Forcast Weather
+const getForcastWeather = async (lat, lon) => {
+  const forcastWeatherUrl = `${API_CONFIG.BASE_URL}forecast?lat=${lat}&lon=${lon}&appid=${API_CONFIG.API_KEY}&units=${API_CONFIG.DEFAULT_PARAMS.units}`;
+  try {
+    const response = await fetch(forcastWeatherUrl);
+    const data = await response.json();
+    return data;
+    // const formattedForcastData = formatForcastData(data);
+
+    // console.log(formattedForcastData);
+    // return formattedForcastData;
+  } catch (error) {
+    console.log("Error fetching forcast data:", error);
   }
 };
 
@@ -50,9 +66,10 @@ const formatToLocalDate = (time, offset) => {
 };
 
 const iconUrlFromCode = (icon) => {
-  return `https://openweathermap.org/img/wn/${icon}@2x.png`;
+  return `${WEATHER_IMAGES.BASE_IMAGE_URL}${icon}${WEATHER_IMAGES.IMAGE_EXT}`;
 };
 
+// Formatted current data
 const formatCurrentData = (data) => {
   const {
     coord: { lat, lon },
@@ -121,3 +138,4 @@ const getWeatherByCity = async (city) => {
 };
 
 export default getWeatherByCity;
+export { getForcastWeather };

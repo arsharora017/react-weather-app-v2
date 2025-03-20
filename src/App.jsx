@@ -6,7 +6,7 @@ import WeatherMap from "./pages/WeatherMap";
 
 function App() {
   return (
-    <>
+    <div>
       <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Body />}>
@@ -16,7 +16,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 
