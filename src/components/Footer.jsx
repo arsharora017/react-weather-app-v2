@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="flex justify-center items-center h-20 bg-[#0e2144] text-white">
+    <footer className="flex justify-center items-center h-20 bg-[#0e2144] text-white mt-10">
       <aside>
         <p>
           Copyright © {new Date().getFullYear()} - All right reserved by

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import {
   LineChart,
   Line,
@@ -9,28 +9,21 @@ import {
   LabelList,
 } from "recharts";
 import WeatherContext from "../context/WeatherContext";
-import { getForcastWeather } from "./getWeatherByCity";
 import { DateTime } from "luxon";
+import useFetchWeatherForecast from "../hooks/useFetchWeatherForecast";
 
 const WeatherChart = () => {
-  const [forecastData, setForecastData] = useState([]);
   const { weather } = useContext(WeatherContext);
-
-  useEffect(() => {
-    const fetchForecast = async () => {
-      try {
-        const forecast = await getForcastWeather(weather.lat, weather.lon);
-        const formattedForecast = formatForecastData(forecast);
-        setForecastData(formattedForecast);
-      } catch (error) {
-        console.error("Error fetching forecast:", error);
-      }
-    };
-    fetchForecast();
-  }, [weather.lat, weather.lon]);
+  const { forecastData, loading, error } = useFetchWeatherForecast(
+    weather.lat,
+    weather.lon
+  );
 
   // Format dorecast data for plotting
   const formatForecastData = (data) => {
+    if (!data || !data.list) {
+      return [];
+    }
     const now = DateTime.now();
     return data.list
       .filter((entry) => {
@@ -44,13 +37,18 @@ const WeatherChart = () => {
         showLabel: index % 3 === 0, // Only show label every 3 hours
       }));
   };
+
+  const formattedData = formatForecastData(forecastData);
+
+  if (loading) return <p className="text-white">Loading...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
   return (
     <div className="w-auto h-72 bg-gray-900 p-4 rounded-lg">
       <header>
         <h1>Today's Temperature</h1>
       </header>
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={forecastData}>
+        <LineChart data={formattedData}>
           {/* X-Axis: Show time every 3 hours */}
           <XAxis
             dataKey="time"

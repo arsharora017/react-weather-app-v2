@@ -4,7 +4,6 @@ import WeatherContext from "../context/WeatherContext";
 const CurrentWeatherConditions = () => {
   const { weather } = useContext(WeatherContext);
 
-  weather;
   return (
     <div className="flex w-2/3 mt-10 h-auto">
       <section className="w-screen flex flex-col border rounded-lg">

@@ -9,6 +9,10 @@ const getLatLon = async (city) => {
 
   try {
     const response = await fetch(geoCodingUrl);
+    if (!response.ok)
+      throw new Error(
+        `Error ${response.status}: Failed to fetch location data`
+      );
     const data = await response.json();
 
     if (data.length > 0) {
@@ -19,7 +23,8 @@ const getLatLon = async (city) => {
       throw new Error("Location not found");
     }
   } catch (error) {
-    console.log(error);
+    console.log("Geocoding Error:", error.message);
+    return null;
   }
 };
 
@@ -38,27 +43,27 @@ const getCurrWeather = async (lat, lon) => {
   }
 };
 
-// Forcast Weather
-const getForcastWeather = async (lat, lon) => {
+// Forecast Weather
+const getForecastWeather = async (lat, lon) => {
   const forcastWeatherUrl = `${API_CONFIG.BASE_URL}forecast?lat=${lat}&lon=${lon}&appid=${API_CONFIG.API_KEY}&units=${API_CONFIG.DEFAULT_PARAMS.units}`;
   try {
     const response = await fetch(forcastWeatherUrl);
+    if (!response.ok)
+      throw new Error(`Error ${response.status}: Failed to fetch forecast`);
     const data = await response.json();
     return data;
-    // const formattedForcastData = formatForcastData(data);
-
-    // console.log(formattedForcastData);
-    // return formattedForcastData;
   } catch (error) {
     console.log("Error fetching forcast data:", error);
+    return { list: [] }; // Return empty structure to prevent crashes
   }
 };
 
+//Local Time
 const formatToLocalTime = (secs, offset, format = "hh: mm a") => {
   return DateTime.fromSeconds(secs + offset, { zone: "utc" }).toFormat(format);
 };
 
-// Local Time
+// Local Date
 const formatToLocalDate = (time, offset) => {
   return DateTime.fromSeconds(time + offset, { zone: "utc" }).toFormat(
     "LLL dd, yyyy"
@@ -138,4 +143,4 @@ const getWeatherByCity = async (city) => {
 };
 
 export default getWeatherByCity;
-export { getForcastWeather };
+export { getForecastWeather };
